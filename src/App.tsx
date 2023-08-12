@@ -1,34 +1,43 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import "./module";
+// Assumes that this is a global state
+let count = 0;
+
+function Comp1() {
+  const [state, setState] = useState(count);
+  const inc = () => {
+    count += 1;
+    setState(count);
+  };
+  return (
+    <section style={{ margin: 16, padding: 8, color: "skyblue" }}>
+      <h2>Comp1</h2>
+      <h3>count with current rendering: {state}</h3>
+      <button onClick={() => inc()}>++</button>
+    </section>
+  );
+}
+
+function Comp2() {
+  const [state, setState] = useState(count);
+  const inc = () => {
+    count += 2;
+    setState(count);
+  };
+  return (
+    <section style={{ margin: 16, padding: 8, color: "hotpink" }}>
+      <h2>Comp2</h2>
+      <h3>count with current rendering: {state}</h3>
+      <button onClick={() => inc()}>++</button>
+    </section>
+  );
+}
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Comp1 />
+
+      <Comp2 />
     </>
   );
 }
