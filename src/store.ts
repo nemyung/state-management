@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 //
 type Callback = () => void;
 type Setter<T> = (prev: T) => T;
-type Store<T> = {
+export type Store<T> = {
   getState: () => T;
   setState: (next: T | Setter<T>) => void;
-  subscribe: (callback: Callback) => void;
+  subscribe: (callback: Callback) => () => void;
 };
 
 /**
