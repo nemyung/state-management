@@ -1,35 +1,56 @@
-import { StoreContextProvider, useSelector, useSetState } from "./module-state";
+import { create } from "zustand";
 
-function ExampleComponent() {
-  const count = useSelector((state) => state.count);
-  const setState = useSetState();
-  const inc = () => {
-    setState((prev) => ({ ...prev, count: prev.count + 1 }));
-  };
+type StoreState = {
+  count1: number;
+  count2: number;
+  inc1: () => void;
+  inc2: () => void;
+};
+const useStore = create<StoreState>((setState) => ({
+  count1: 0,
+  count2: 0,
+  inc1: () => setState((prev) => ({ count1: prev.count1 + 1 })),
+  inc2: () => setState((prev) => ({ count2: prev.count2 + 1 })),
+}));
+
+const selectCount1 = (state: StoreState) => state.count1;
+const selectInc1 = (state: StoreState) => state.inc1;
+const Counter1 = () => {
+  const count1 = useStore(selectCount1);
+  const inc = useStore(selectInc1);
+
   return (
-    <div>
-      count: {count} <button onClick={inc}>++</button>
+    <div style={{ margin: 16, padding: 8, color: "skyblue" }}>
+      <h1>Counter1</h1>
+      <p>count1: {count1}</p>
+      <button onClick={inc}>++</button>
     </div>
   );
-}
+};
+
+const selectCount2 = (state: StoreState) => state.count2;
+const selectInc2 = (state: StoreState) => state.inc2;
+const Counter2 = () => {
+  const count2 = useStore(selectCount2);
+  const inc = useStore(selectInc2);
+
+  return (
+    <div style={{ margin: 16, padding: 8, color: "hotpink" }}>
+      <h1>Counter2</h1>
+      <p>count2: {count2}</p>
+      <button onClick={inc}>++</button>
+    </div>
+  );
+};
 
 function App() {
+  // const { count } = useStore();
   return (
     <>
-      <h1>1. using default store</h1>
-      <ExampleComponent />
-      <ExampleComponent />
-
-      <StoreContextProvider initialState={{ count: 100, text: "" }}>
-        <h1>2. using store porvider. default count is 100</h1>
-        <ExampleComponent />
-        <ExampleComponent />
-        <StoreContextProvider initialState={{ count: 1000, text: "" }}>
-          <h1>2. using store porvider. default count is 1000</h1>
-          <ExampleComponent />
-          <ExampleComponent />
-        </StoreContextProvider>
-      </StoreContextProvider>
+      <main>
+        <Counter1 />
+        <Counter2 />
+      </main>
     </>
   );
 }
