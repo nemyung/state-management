@@ -28,6 +28,7 @@ const Counter2 = () => {
 };
 
 function App() {
+  // const { count } = useStore();
   return (
     <main>
       <Counter1 />
